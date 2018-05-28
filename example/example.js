@@ -27,7 +27,7 @@ group("math", () => {
             t.assertNot(1);
         });
 
-        test("is 9 + 10 == 21?", t => {
+        test("is 9 + 10 != 21?", t => {
             t.assertNotEq(9 + 10, 21);
         });
     });

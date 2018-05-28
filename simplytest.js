@@ -62,32 +62,24 @@
     
     const testerObject = () => ({
         assert: a => {
-            if (a) {
-                return true;
-            } else {
-                throw new Error(`assert(): '${a}' did not result in a truthy value!`);
-            }
+            if (a) return true;
+            
+            throw new Error(`assert(): '${a}' did not result in a truthy value!`);
         },
         assertNot: a => {
-            if (!a) {
-                return true;
-            } else {
-                throw new Error(`assertNot(): '${a}' did not result in a falsy value!`);
-            }
+            if (!a) return true;
+            
+            throw new Error(`assertNot(): '${a}' did not result in a falsy value!`);
         },
         assertEq: (a, b) => {
-            if (a === b) {
-                return true;
-            } else {
-                throw new Error(`assertEq(): '${a}' !== '${b}' !`);
-            }
+            if (a === b) return true;
+            
+            throw new Error(`assertEq(): '${a}' !== '${b}' !`);
         },
         assertNotEq: (a, b) => {
-            if (a !== b) {
-                return true;
-            } else {
-                throw new Error(`assertNotEq(): '${a}' === '${b}' !`);
-            }
+            if (a !== b) return true;
+            
+            throw new Error(`assertNotEq(): '${a}' === '${b}' !`);
         },
         fail: () => {
             throw new Error(`fail(): Test failed!`);

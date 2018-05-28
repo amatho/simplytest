@@ -7,6 +7,10 @@ const fibonacci = n => {
     return fibonacci(n-1) + fibonacci(n-2);
 };
 
+const badFunction = () => {
+    throw new Error("oh no something wrong");
+};
+
 setup();
 
 group("math", () => {
@@ -33,11 +37,16 @@ group("math", () => {
     });
 });
 
-test("fibonacci", t => {
-    t.assertEq(fibonacci(1), 1);
-    t.assertEq(fibonacci(2), 1);
-    t.assertEq(fibonacci(3), 2);
-    t.assertEq(fibonacci(4), 3);
+test("this function should throw an error", t => {
+    t.throws(badFunction, "oh yesn't");
+});
+
+group("fibonacci", () => {
+    test("fibonacci(1) == 1", t => t.assertEq(fibonacci(1), 1));
+    test("fibonacci(2) == 1", t => t.assertEq(fibonacci(2), 1));
+    test("fibonacci(3) == 2", t => t.assertEq(fibonacci(3), 2));
+    test("fibonacci(4) == 3", t => t.assertEq(fibonacci(4), 3));
+    test("fibonacci(0) should throw", t => t.throws(() => fibonacci(0)));
 });
 
 end();

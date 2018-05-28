@@ -15,7 +15,7 @@
         font-size: 62.5%;
     }
     #result {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
     }
     #result .item {
         padding: 8px 16px;
@@ -46,13 +46,16 @@
         color: #ffffff;
     }
     #result .disabled .status {
-        background-color: #c0c0c0;
+        background-color: #cfcfcf;
     }
     .red {
         color: #ff0000;
     }
     .green {
         color: #00ff00;
+    }
+    .tab {
+        margin-left: 2rem;
     }
     `;
 
@@ -80,6 +83,28 @@
             if (a !== b) return true;
             
             throw new Error(`assertNotEq(): '${a}' === '${b}' !`);
+        },
+        throws: (fn, errorMsg = "") => {
+            const didNotThrowError = new Error(`throws(): Function '${fn.name}' did not throw!`);
+
+            try {
+                fn();
+                throw didNotThrowError;
+            } catch(e) {
+                if (e === didNotThrowError) throw didNotThrowError;
+                if (errorMsg === "" || e.message === errorMsg) return true;
+
+                throw new Error("throws(): The error message was unexpected!<br>" +
+                    `<span class="tab"></span>Found: ${e.message}<br>
+                    <span class="tab"></span>Expected: ${errorMsg}`);
+            }
+        },
+        throwsNot: fn => {
+            try {
+                fn();
+            } catch(e) {
+                throw new Error(`throwsNot(): Function '${fn.name}' did throw!<br><span class="tab"></span>Message: ${e.message}`);
+            }
         },
         fail: () => {
             throw new Error(`fail(): Test failed!`);
@@ -115,7 +140,6 @@
     const writeTestResult = (name, passed, errorMsg) => {
         const className = passed ? "success" : "fail";
         const status = passed ? "OK" : "FAIL";
-        const statusText = passed ? "Test passed successfully." : "Test did not pass!";
     
         let failText = "";
         if (!passed) {
@@ -124,7 +148,7 @@
         }
     
         const content = `
-        <b><span class="status">${status}</span> "${name}". ${statusText}</b>
+        <b><span class="status">${status}</span> "${name}".</b>
         ${failText}
         `;
         
@@ -148,7 +172,7 @@
     };
 
     const writeGroup = name => {
-        const nameStr = `=> "${name}" group`;
+        const nameStr = `<b>=> "${name}" group</b>`;
         const val = 255 - (30 * _groupCount);
         const style = `background-color: rgb(${val},${val},${val})`;
         const id = "group" + _groupCount;

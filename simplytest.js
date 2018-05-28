@@ -61,22 +61,36 @@
     let _groupCount = 0;
     
     const testerObject = () => ({
-        assertEq: (a, b) => {
-            if (a === b) {
-                return true;
-            } else {
-                throw new Error(`assertEq(): '${a}' !== '${b}'`);
-            }
-        },
         assert: a => {
             if (a) {
                 return true;
             } else {
-                throw new Error(`assert(): '${a}' did not result in a truthy value.`);
+                throw new Error(`assert(): '${a}' did not result in a truthy value!`);
+            }
+        },
+        assertNot: a => {
+            if (!a) {
+                return true;
+            } else {
+                throw new Error(`assertNot(): '${a}' did not result in a falsy value!`);
+            }
+        },
+        assertEq: (a, b) => {
+            if (a === b) {
+                return true;
+            } else {
+                throw new Error(`assertEq(): '${a}' !== '${b}' !`);
+            }
+        },
+        assertNotEq: (a, b) => {
+            if (a !== b) {
+                return true;
+            } else {
+                throw new Error(`assertNotEq(): '${a}' === '${b}' !`);
             }
         },
         fail: () => {
-            throw new Error(`fail(): Test failed.`);
+            throw new Error(`fail(): Test failed!`);
         }
     });
 

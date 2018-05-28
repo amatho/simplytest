@@ -22,6 +22,14 @@ group("math", () => {
         test("is 1 truthy?", t => {
             t.assert(1);
         });
+
+        test("is 0 truthy?", t => {
+            t.assertNot(1);
+        });
+
+        test("is 9 + 10 == 21?", t => {
+            t.assertNotEq(9 + 10, 21);
+        });
     });
 });
 

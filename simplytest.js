@@ -148,7 +148,7 @@
         }
     
         const content = `
-        <b><span class="status">${status}</span> "${name}".</b>
+        <b><span class="status">${status}</span> &mdash; "${name}".</b>
         ${failText}
         `;
         
@@ -173,7 +173,7 @@
 
     const writeGroup = name => {
         const nameStr = `<b>=> "${name}" group</b>`;
-        const val = 255 - (30 * _groupCount);
+        const val = 255 - (30 * (_indentLevel + 1));
         const style = `background-color: rgb(${val},${val},${val})`;
         const id = "group" + _groupCount;
 
@@ -188,7 +188,7 @@
         resultEl.innerHTML += `<hr>`;
 
         const content = `
-        <b>Testing <span class="${color}">${exitStatus}</span>.</b><br><br>
+        <b>Tests <span class="${color}">${exitStatus}</span>.</b><br><br>
         Total: ${total}. Passed: <span class="green">${passed}</span>. Failed: <span class="red">${failed}</span>.
         `;
 

@@ -84,6 +84,16 @@
             
             throw new Error(`assertNotEq(): '${a}' === '${b}' !`);
         },
+        assertLt: (a, b) => {
+            if (a < b) return true;
+
+            throw new Error(`assertLt(): '${a}' is not less than '${b}' !`);
+        },
+        assertGt: (a, b) => {
+            if (a > b) return true;
+
+            throw new Error(`assertGt(): '${a}' is not greater than '${b}' !`);
+        },
         throws: (fn, errorMsg = "") => {
             const didNotThrowError = new Error(`throws(): Function '${fn.name}' did not throw!`);
 

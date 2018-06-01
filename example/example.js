@@ -15,11 +15,11 @@ setup();
 
 group("math", () => {
     xtest("does 2 == 1?", t => {
-        t.assertEq(2, 1);
+        t.identical(2, 1);
     });
-    
+
     test("2 + 2 == 4?", t => {
-        t.assertEq(2 + 2, 4);
+        t.identical(2 + 2, 4);
     });
 
     group("nested", () => {
@@ -28,11 +28,11 @@ group("math", () => {
         });
 
         test("is 0 truthy?", t => {
-            t.assertNot(1);
+            t.assert(0);
         });
 
         test("is 9 + 10 != 21?", t => {
-            t.assertNotEq(9 + 10, 21);
+            t.nonidentical(9 + 10, 21);
         });
     });
 });
@@ -42,10 +42,10 @@ test("this function should throw an error", t => {
 });
 
 group("fibonacci", () => {
-    test("fibonacci(1) == 1", t => t.assertEq(fibonacci(1), 1));
-    test("fibonacci(2) == 1", t => t.assertEq(fibonacci(2), 1));
-    test("fibonacci(3) == 2", t => t.assertEq(fibonacci(3), 2));
-    test("fibonacci(4) == 3", t => t.assertEq(fibonacci(4), 3));
+    test("fibonacci(1) == 1", t => t.identical(fibonacci(1), 1));
+    test("fibonacci(2) == 1", t => t.identical(fibonacci(2), 1));
+    test("fibonacci(3) == 2", t => t.identical(fibonacci(3), 2));
+    test("fibonacci(4) == 3", t => t.identical(fibonacci(4), 3));
     test("fibonacci(0) should throw", t => t.throws(() => fibonacci(0)));
 });
 

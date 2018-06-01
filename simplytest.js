@@ -62,63 +62,62 @@
     let _elementId;
     let _indentLevel = 0;
     let _groupCount = 0;
-    
+
+    const evaluator = (expr, message) => {
+      if (expr) return true;
+
+      throw new Error(message);
+    };
+
+    const assert = a => evaluator(a,
+      `assert(): '${a}' did not result in a truthy value!`);
+
+    const identical = (a, b) => evaluator(a === b,
+      `identical(): '${a}' is not identical to '${b}'!`);
+
+    const nonidentical = (a, b) => evaluator(a !== b,
+      `nonidentical(): '${a}' is identical to '${b}'!`);
+
+    const equal = (a, b) => evaluator(a == b,
+      `equal(): '${a}' is unequal to '${b}'!`);
+
+    const unequal = (a, b) => evaluator(a != b,
+      `unequal(): '${a}' is equal to '${b}'!`);
+
+    const less = (a, b) => evaluator(a < b,
+      `less(): '${a}' is not less than '${b}' !`);
+
+    const greater = (a, b) => evaluator(a > b,
+      `greater(): '${a}' is not greater than '${b}' !`);
+
     const testerObject = () => ({
-        assert: a => {
-            if (a) return true;
-            
-            throw new Error(`assert(): '${a}' did not result in a truthy value!`);
-        },
-        assertNot: a => {
-            if (!a) return true;
-            
-            throw new Error(`assertNot(): '${a}' did not result in a falsy value!`);
-        },
-        assertEq: (a, b) => {
-            if (a === b) return true;
-            
-            throw new Error(`assertEq(): '${a}' !== '${b}' !`);
-        },
-        assertNotEq: (a, b) => {
-            if (a !== b) return true;
-            
-            throw new Error(`assertNotEq(): '${a}' === '${b}' !`);
-        },
-        assertLt: (a, b) => {
-            if (a < b) return true;
+      assert, identical, nonidentical, equal, unequal, less, greater,
 
-            throw new Error(`assertLt(): '${a}' is not less than '${b}' !`);
-        },
-        assertGt: (a, b) => {
-            if (a > b) return true;
+      throws: (fn, errorMsg = "") => {
+          const didNotThrowError = new Error(`throws(): Function '${fn.name}' did not throw!`);
 
-            throw new Error(`assertGt(): '${a}' is not greater than '${b}' !`);
-        },
-        throws: (fn, errorMsg = "") => {
-            const didNotThrowError = new Error(`throws(): Function '${fn.name}' did not throw!`);
+          try {
+              fn();
+              throw didNotThrowError;
+          } catch(e) {
+              if (e === didNotThrowError) throw didNotThrowError;
+              if (errorMsg === "" || e.message === errorMsg) return true;
 
-            try {
-                fn();
-                throw didNotThrowError;
-            } catch(e) {
-                if (e === didNotThrowError) throw didNotThrowError;
-                if (errorMsg === "" || e.message === errorMsg) return true;
-
-                throw new Error("throws(): The error message was unexpected!<br>" +
-                    `<span class="tab"></span>Found: ${e.message}<br>
-                    <span class="tab"></span>Expected: ${errorMsg}`);
-            }
-        },
-        throwsNot: fn => {
-            try {
-                fn();
-            } catch(e) {
-                throw new Error(`throwsNot(): Function '${fn.name}' did throw!<br><span class="tab"></span>Message: ${e.message}`);
-            }
-        },
-        fail: () => {
-            throw new Error(`fail(): Test failed!`);
-        }
+              throw new Error("throws(): The error message was unexpected!<br>" +
+                  `<span class="tab"></span>Found: ${e.message}<br>
+                  <span class="tab"></span>Expected: ${errorMsg}`);
+          }
+      },
+      works: fn => {
+          try {
+              fn();
+          } catch(e) {
+              throw new Error(`works(): Function '${fn.name}' did throw!<br><span class="tab"></span>Message: ${e.message}`);
+          }
+      },
+      fail: () => {
+          throw new Error(`fail(): Test failed!`);
+      }
     });
 
     const writeDiv = (content, className = "", indent = _indentLevel, id = "", style = "") => {
@@ -146,29 +145,29 @@
         </div>
         `;
     };
-    
+
     const writeTestResult = (name, passed, errorMsg) => {
         const className = passed ? "success" : "fail";
         const status = passed ? "OK" : "FAIL";
-    
+
         let failText = "";
         if (!passed) {
             failText = `<br><br>${errorMsg}<br>
             Check the JavaScript console for the stack trace.`;
         }
-    
+
         const content = `
         <b><span class="status">${status}</span> &mdash; "${name}".</b>
         ${failText}
         `;
-        
+
         writeDiv(content, className);
     };
-    
+
     const writePassed = name => {
         writeTestResult(name, true);
     };
-    
+
     const writeFailed = (name, errorMsg) => {
         writeTestResult(name, false, errorMsg);
     };
@@ -189,12 +188,12 @@
 
         writeDiv(nameStr, "", _indentLevel, id, style);
     };
-    
+
     const writeSummary = ({total = 0, passed = 0, failed = 0}) => {
         const resultEl = document.getElementById(_elementId);
         const exitStatus = failed === 0 ? "succeeded" : "failed";
         const color = failed === 0 ? "green" : "red";
-    
+
         resultEl.innerHTML += `<hr>`;
 
         const content = `
@@ -220,14 +219,14 @@
             document.head.appendChild(el);
         }
     };
-    
+
     const end = () => {
         writeSummary(results);
     };
 
     const test = (name, callback) => {
         results.total++;
-    
+
         try {
             callback(testerObject());
             writePassed(name);
@@ -238,7 +237,7 @@
             results.failed++;
         }
     };
-    
+
     const xtest = name => {
         writeDisabled(name);
     };
@@ -251,7 +250,7 @@
         callback();
         _indentLevel--;
     };
-    
+
     simplytest = {
         setup,
         test,
@@ -259,6 +258,6 @@
         group,
         end
     };
-    
+
     window.simplytest = window.simplytest || simplytest;
 })();

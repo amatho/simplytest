@@ -1,4 +1,4 @@
-const {setup, test, xtest, group, end} = window.simplytest;
+const {start, test, xtest, group, end} = window.simplytest;
 
 const fibonacci = n => {
     if (n < 1) throw new Error("Must be called with natural numbers over 0.");
@@ -11,7 +11,7 @@ const badFunction = () => {
     throw new Error("oh no something wrong");
 };
 
-setup();
+start();
 
 group("math", () => {
     xtest("does 2 == 1?", t => {

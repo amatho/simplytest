@@ -22,8 +22,10 @@
   },
   "homepage": "https://github.com/amatho/simplytest#readme",
   "devDependencies": {
+    "babel-core": "^6.26.3",
     "rollup": "^0.59.4",
-    "rollup-plugin-buble": "^0.19.2",
-    "rollup-plugin-replace": "^2.0.0"
+    "rollup-plugin-babel": "^3.0.4",
+    "rollup-plugin-replace": "^2.0.0",
+    "rollup-plugin-uglify": "^4.0.0"
   }
 }

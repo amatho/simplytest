@@ -1,7 +1,11 @@
 import config from "./rollup.config";
 
 export default config({
-    format: "iife",
-    dest: "dist/simplytest.js",
-    browser: true
+  input: "src/browser.js",
+  output: {
+    file: "dist/simplytest.js",
+    name: "simplytest",
+    format: "iife"
+  },
+  browser: true
 });

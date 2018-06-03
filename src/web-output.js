@@ -59,7 +59,6 @@ const styleString = `
 const writeDiv = (
   content,
   className = "",
-  indent = 0,
   id = "",
   style = ""
 ) => {
@@ -67,15 +66,15 @@ const writeDiv = (
   const prevGroupEl = document.getElementById("group" + (_groupCount - 1));
   let el;
 
-  if (indent > 0 && groupEl !== null) {
+  if (_indentLevel > 0 && groupEl !== null) {
     el = groupEl;
-  } else if (indent > 0 && prevGroupEl !== null) {
+  } else if (_indentLevel > 0 && prevGroupEl !== null) {
     el = prevGroupEl;
   } else {
     el = _parent;
   }
 
-  const margin = indent * 2;
+  const margin = _indentLevel * 2;
   el.innerHTML += `
         <div
             id="${id}"
@@ -128,7 +127,7 @@ const group = name => {
   const style = `background-color: rgb(${val},${val},${val})`;
   const id = "group" + _groupCount;
 
-  writeDiv(nameStr, "", _indentLevel, id, style);
+  writeDiv(nameStr, "", id, style);
 };
 
 const summary = ({ total = 0, passed = 0, failed = 0 }) => {
@@ -145,7 +144,7 @@ const summary = ({ total = 0, passed = 0, failed = 0 }) => {
   writeDiv(content, "result", 0);
 };
 
-const setup = () => {
+const start = () => {
 
   const el = document.createElement("div");
   el.id = "result";
@@ -168,7 +167,7 @@ const unindent = () => {
 };
 
 export {
-  setup,
+  start,
   passed,
   failed,
   disabled,

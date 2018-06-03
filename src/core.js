@@ -1,7 +1,3 @@
-import * as webOutput from "./web-output";
-
-const output = process.browser ? webOutput : null;
-
 const results = {
   total: 0,
   passed: 0,
@@ -49,8 +45,7 @@ const testerObject = () => ({
       if (errorMsg === "" || e.message === errorMsg) return true;
 
       throw new Error("throws(): The error message was unexpected!\n" +
-        `\tFound: ${e.message}\n
-        \tExpected: ${errorMsg}`);
+        `\tFound: ${e.message}\n\tExpected: ${errorMsg}`);
     }
   },
   works: fn => {
@@ -65,13 +60,13 @@ const testerObject = () => ({
   }
 });
 
-const setup = output.setup;
+const start = output => output.start;
 
-const end = () => {
+const end = output => () => {
   output.summary(results);
 };
 
-const test = (name, callback) => {
+const test = output => (name, callback) => {
   results.total++;
 
   try {
@@ -85,9 +80,9 @@ const test = (name, callback) => {
   }
 };
 
-const xtest = output.disabled;
+const xtest = output => output.disabled;
 
-const group = (name, callback) => {
+const group = output => (name, callback) => {
   output.group(name);
 
   output.indent();
@@ -96,7 +91,7 @@ const group = (name, callback) => {
 };
 
 export {
-  setup,
+  start,
   test,
   xtest,
   group,
